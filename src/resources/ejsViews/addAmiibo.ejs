@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Amiibo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+      const redirectHomepage = () => location.replace("/");
+
+      const sendPostRequest = () => {
+          const name = document.getElementById("newAmiibo").value;
+          const gameSeries = document.getElementById("gameSeriesSelect").value;
+          const amiiboSeries = document.getElementById("amiiboSeriesSelect").value;
+          const character = document.getElementById("characterSelect").value;
+          const type = document.getElementById("typeSelect").value;
+          const imgAmiibo = document.getElementById("img").src;
+          debugger
+          $.ajax({
+              type: "POST",
+              url: "/api/amiibo",
+              data: {
+                "name": name,
+                "gameSeries": gameSeries,
+                "amiiboSeries": amiiboSeries,
+                "character": character,
+                "type": type,
+                "imgAmiibo": imgAmiibo
+              },
+              dataType: "json",
+              success: () => location.replace("/")
+          });
+      }
+
+      const openFile = function(event) {
+        let input = event.target;
+        let reader = new FileReader();
+        reader.onload = function() {
+          let output = document.getElementById('img');
+          output.src = reader.result;
+        };
+      reader.readAsDataURL(input.files[0]);
+      };
+    </script>
+
+    <link rel="stylesheet" href="assets/css/addAmiibo.css">
+</head>
+
+<body>
+    <div>
+        <form onSubmit="sendPostRequest()">
+          <h1>Ajouter un Amiibo</h1>
+            <p>
+              <label for="typeSelect">Type: </label>
+              <select id="typeSelect">
+                <% for(let i=0; i<type.amiibo.length; i++) {%>
+                    <option><%= type.amiibo[i].name%></option>;
+                <%}%>
+              </select>
+            </p>
+
+            <p>
+              <label for="gameSeriesSelect">GameSeries: </label>
+              <select id="gameSeriesSelect">
+                <% for(let i=0; i<gameSeries.amiibo.length; i++) {%>
+                    <option><%= gameSeries.amiibo[i].name%></option>;
+                <%}%>
+              </select>
+            </p>
+
+            <p>
+              <label for="amiiboSeriesSelect">AmiiboSeries: </label>
+              <select id="amiiboSeriesSelect">
+                <% for(let i=0; i<amiiboSeries.amiibo.length; i++) {%>
+                    <option><%= amiiboSeries.amiibo[i].name%></option>;
+                <%}%>
+              </select>
+            </p>
+
+            <p>
+              <label for="characterSelect">Character: </label>
+              <select id="characterSelect">
+                <% for(let i=0; i<character.amiibo.length; i++) {%>
+                    <option><%= character.amiibo[i].name%></option>;
+                <%}%>
+              </select>
+            </p>
+            <label for="imgAmiibo">Image: </label>
+            <input id="imgAmiibo" type="file" onChange="openFile(event)" />
+            <p>
+              <img id="img">
+            </p>
+            <p>
+              <label for="newAmiibo">Nom de l'amiibo: </label>
+              <input id="newAmiibo" type="text" placeholder="Nom de l'amiibo" />
+            </p>
+            <button type="submit">Valider</button>
+        </form>
+        <button id="retour" onclick="redirectHomepage()">Retour</button>
+    </div>
+</body>
+
+</html>
