@@ -40,10 +40,10 @@ const success = () => {
     return res.render(
       'addAmiibo', 
       {
-        type: typeData.amiibo, 
-        gameSeries: amiiboseriesData.getGameSeries,
-        amiiboSeries: gameseriesData.getAmiiboSeries, 
-        character: charactersData.getCharacters
+        type: typeData, 
+        gameSeries: amiiboseriesData,
+        amiiboSeries: gameseriesData, 
+        character: charactersData
       }
     )
   });

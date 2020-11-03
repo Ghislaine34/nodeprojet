@@ -1,4 +1,3 @@
-import dataImportES6 from '../import/ES6';
 import { getAmiiboseriesFromDatabase } from '../db/connector';
 
 const amiiboseriesControler = async (req, res) => {

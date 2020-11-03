@@ -130,11 +130,11 @@ const loadDataBase = (successCallback, errorCallback) => {
             return;
           }
           if (result.length) {
-            console.log('Database already exist, DROP !!!')
+            console.log('Database already exist, USE IT !!!')
             db.query(
-              "DROP DATABASE amiibo",
+              "USE amiibo",
               (err, result) => {
-                createDatabase(successCallback, errorCallback);
+                successCallback();
               }
             );
           }else {

@@ -1,6 +1,4 @@
-import dataImportES6 from '../import/ES6';
 import { getGameseriesFromDatabase } from '../db/connector';
-
 
 const gameseriesControler = async (req, res) => {
   const gameseriesData = await getGameseriesFromDatabase();

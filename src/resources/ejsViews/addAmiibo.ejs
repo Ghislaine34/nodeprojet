@@ -17,7 +17,6 @@
           const character = document.getElementById("characterSelect").value;
           const type = document.getElementById("typeSelect").value;
           const imgAmiibo = document.getElementById("img").src;
-          debugger
           $.ajax({
               type: "POST",
               url: "/api/amiibo",
@@ -57,7 +56,7 @@
               <select id="typeSelect">
                 <% for(let i=0; i<type.amiibo.length; i++) {%>
                     <option><%= type.amiibo[i].name%></option>;
-                <%}%>
+                <% }%>
               </select>
             </p>
 
