@@ -1,7 +1,9 @@
 import dataImportES6 from '../import/ES6';
+import { getAmiiboseriesFromDatabase } from '../db/connector';
 
-const amiiboseriesControler = (req, res) => {
-    res.status(200).json(dataImportES6.getAmiiboSeries);
+const amiiboseriesControler = async (req, res) => {
+  const amiiboseriesData = await getAmiiboseriesFromDatabase();
+    res.status(200).json(amiiboseriesData);
   }
   
   export default amiiboseriesControler;

@@ -3,7 +3,13 @@ import express from 'express';
 import createRoutes from './routes';
 import dataImportES6 from './import/ES6';
 import bodyParser from 'body-parser';
-import loadDataBase, { getTypeFromDatabase } from './db/connector.js';
+import loadDataBase, 
+  {
+    getTypeFromDatabase, 
+    getAmiiboseriesFromDatabase, 
+    getCharactersFromDatabase, 
+    getGameseriesFromDatabase
+  } from './db/connector.js';
 
 
 
@@ -28,13 +34,16 @@ const success = () => {
 
   app.get('/addAmiibo', async (req, res) => {
     const typeData = await getTypeFromDatabase();
+    const amiiboseriesData = await getAmiiboseriesFromDatabase();
+    const gameseriesData = await getGameseriesFromDatabase();
+    const charactersData = await getCharactersFromDatabase();
     return res.render(
       'addAmiibo', 
       {
         type: typeData.amiibo, 
-        gameSeries: dataImportES6.getGameSeries,
-        amiiboSeries: dataImportES6.getAmiiboSeries, 
-        character: dataImportES6.getCharacters
+        gameSeries: amiiboseriesData.getGameSeries,
+        amiiboSeries: gameseriesData.getAmiiboSeries, 
+        character: charactersData.getCharacters
       }
     )
   });

@@ -3,9 +3,6 @@ import { getTypeFromDatabase } from '../db/connector';
 
 const typeController = async (req, res) => {
   const typeData = await getTypeFromDatabase();
-
-  //console.log("DB", typeData);
-
   res.status(200).json(typeData);
 }
 

@@ -1,4 +1,3 @@
-import { resolveInclude } from 'ejs';
 import mysql from 'mysql';
 import Importer from 'mysql-import';
 import dataImportES6 from '../import/ES6';
@@ -16,11 +15,11 @@ const formatJson = (dbArray) => {
   return {amiibo: amiiboArray};
 }
 
-const getTypeFromDatabase = () => {
+const getAllFromSubtable = (tableName) => {
   return new Promise(
     (resolve, reject) => {
       db.query(
-        "SELECT * FROM types;",
+        `SELECT * FROM ${tableName};`,
         (err, result) => {
           if (err) reject(err);
           resolve(formatJson(result));
@@ -28,6 +27,22 @@ const getTypeFromDatabase = () => {
       );
     }
   );
+}
+
+const getTypeFromDatabase = () => {
+  return getAllFromSubtable("types");
+}
+
+const getAmiiboseriesFromDatabase = () => {
+  return getAllFromSubtable("amiiboseries");
+}
+
+const getGameseriesFromDatabase = () => {
+  return getAllFromSubtable("gameseries");
+}
+
+const getCharactersFromDatabase = () => {
+  return getAllFromSubtable("characters");
 }
 
 
@@ -77,11 +92,6 @@ const importES6Data = (successCallback, errorCallback) => {
       const mapGameseries = loadSubTable('gameseries', dataImportES6.getGameSeries.amiibo);
 
       populateTableAmiibo(mapType, mapCharacter, mapAmiiboseries, mapGameseries);
-
-      /*getDataDb('types');
-      getDataDb('characters');
-      getDataDb('amiiboseries');
-      getDataDb('gameseries');*/
       
       successCallback();
     },
@@ -104,25 +114,6 @@ const populateTableAmiibo = (mapType, mapCharacter, mapAmiiboseries, mapGameseri
     db.query(sql)
   });
 }
-
-
-
-/*const getDataDb = (tableName) => {
-  let jsonData = { amiibo: [] };
-  db.query(
-    "SELECT * FROM " + tableName, (err, result) => {
-      if(err) {
-        console.log(err);
-        return;
-      }
-      result.forEach(item => {
-        jsonData.amiibo.push({ name: item.name });
-      });
-      console.log(jsonData);
-      return jsonData;
-    });
-}*/
-
 
 const loadDataBase = (successCallback, errorCallback) => {
   db.connect(
@@ -156,4 +147,4 @@ const loadDataBase = (successCallback, errorCallback) => {
 }
 
 export default loadDataBase;
-export {getTypeFromDatabase};
+export {getTypeFromDatabase, getAmiiboseriesFromDatabase, getCharactersFromDatabase, getGameseriesFromDatabase};
