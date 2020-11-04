@@ -45,6 +45,38 @@ const getCharactersFromDatabase = () => {
   return getAllFromSubtable("characters");
 }
 
+const getMainTableData = () => {
+  return new Promise(
+    (resolve, reject) => {
+      db.query(
+        `SELECT 
+            amiibo.name, 
+            amiibo.image, 
+            types.name AS type, 
+            amiiboseries.name AS amiiboSeries, 
+            gameseries.name AS gameSeries, 
+            characters.name AS "character"
+        FROM amiibo 
+          INNER JOIN types 
+          INNER JOIN amiiboseries
+          INNER JOIN gameseries
+          INNER JOIN characters
+        WHERE 
+          amiibo.types_id = types.id 
+          AND amiibo.amiiboseries_id = amiiboseries.id 
+          AND amiibo.gameseries_id = gameseries.id 
+          AND amiibo.characters_id = characters.id `,
+
+        (err, result) => {
+          if (err) reject(err);
+          //console.log(result);
+          resolve({amiibo: result});
+        }
+      );
+    }
+  );
+}
+
 
 const createDatabase = (successCallback, errorCallback) => {
   console.log("Ready to create database");
@@ -148,3 +180,4 @@ const loadDataBase = (successCallback, errorCallback) => {
 
 export default loadDataBase;
 export {getTypeFromDatabase, getAmiiboseriesFromDatabase, getCharactersFromDatabase, getGameseriesFromDatabase};
+export {getMainTableData};

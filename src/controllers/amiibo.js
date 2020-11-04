@@ -1,7 +1,11 @@
 import dataImportES6 from '../import/ES6';
+import {getMainTableData} from '../db/connector';
 
 
-const amiiboControler = (req, res) => {
+const amiiboControler = async (req, res) => {
+  const data = await getMainTableData();
+  res.status(200).json(data);
+
   const urlParameters = req.query;
 
   let amiiboList = dataImportES6.getAmiibos.amiibo;
@@ -14,7 +18,7 @@ const amiiboControler = (req, res) => {
 
   if (urlParameters.character) amiiboList = dataImportES6.getAmiiboByFilter(amiiboList, "character", urlParameters.character);
 
-  res.status(200).json({amiibo: amiiboList});
+  
 };
 
 export const addAmiiboController = (req, res) => {
